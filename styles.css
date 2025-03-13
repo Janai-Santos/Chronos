@@ -1,0 +1,302 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: sans-serif;
+}
+
+body {
+    background: #f0f2f5;
+    min-height: 100vh;
+    padding: 20px;
+}
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    background: white;
+    border-radius: 10px;
+    box-shadow: 0 0 20px rgba(0,0,0,0.1);
+    padding: 20px;
+}
+
+header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-bottom: 20px;
+    border-bottom: 1px solid #eee;
+}
+
+h1 {
+    color: #2c3e50;
+    font-weight: bold;
+    position: sticky;
+    top: 0;
+}
+
+.clock-container {
+    flex-grow: 1;
+    display: flex;
+    justify-content: center;
+}
+
+.digital-clock {
+    background: #ecf0f1;
+    color: #2c3e50;
+    padding: 5px 15px;
+    border-radius: 10px;
+    font-size: 1.5em;
+    font-weight: bold;
+    border: 1px solid #ddd;
+}
+
+.month-selector {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.btn {
+    padding: 8px 15px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    color: white;
+    font-weight: bold;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.btn:hover {
+    filter: brightness(90%);
+}
+
+.btn-blue { background: #3498db; }
+.btn-green { background: #2ecc71; }
+.btn-red { background: #e74c3c; }
+.btn-user { background: #b3b1aa; }
+.btn-settings { background: #95a5a6; padding: 5px 10px; font-size: 0.9em; }
+
+.btn-nav {
+    background: #ecf0f1;
+    color: #2c3e50;
+    padding: 5px 10px;
+    font-size: 0.9em;
+    border-radius: 3px;
+}
+
+.btn-register {
+    background: #13c6e6;
+    padding: 10px 20px;
+    border-radius: 25px;
+    font-size: 1.1em;
+    font-weight: bold;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.btn-export {
+    background: #c74f4f;
+    padding: 6px 12px;
+    font-size: 0.9em;
+}
+
+.btn-register:hover, .btn-export:hover {
+    filter: brightness(90%);
+}
+
+.clock-icon, .pdf-icon {
+    font-size: 1.2em;
+}
+
+.controls-container {
+    margin: 20px 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 15px;
+}
+
+.daily-summary table {
+    border-collapse: collapse;
+    font-size: 1em;
+}
+
+.daily-summary th, .daily-summary td {
+    padding: 4px 10px;
+    text-align: center;
+}
+
+.daily-summary th {
+    color: white;
+    font-weight: bold;
+    background: #2c3e50;
+}
+
+.daily-summary td {
+    background: #f8f9fa;
+    border-radius: 4px;
+}
+
+.daily-summary .extra-hours {
+    color: #45aa6f;
+}
+
+.daily-summary .negative-hours {
+    color: #e74c3c;
+}
+
+.extra-hours {
+    margin: 20px 0;
+    font-size: 1.2em;
+    color: #000;
+    font-weight: bold;
+}
+
+.extra-hours span {
+    color: #45aa6f;
+}
+
+.table-container {
+    overflow-x: auto;
+}
+
+#timeTable {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+    margin: 20px 0;
+    background: #fff;
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+#timeTable th, #timeTable td {
+    padding: 18px;
+    text-align: center;
+    border-bottom: 1px solid #eee;
+    font-weight: normal;
+    font-size: 1.1em;
+}
+
+#timeTable th {
+    background: #2c3e50;
+    color: white;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+#timeTable td.extra-hours {
+    color: #45aa6f;
+}
+
+#timeTable td.negative-hours {
+    color: #e74c3c;
+}
+
+#timeTable tr.weekend {
+    background: #e0e0e0;
+}
+
+#timeTable tr:hover {
+    background: #ecf0f1;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+
+.modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,0.5);
+}
+
+.modal-content {
+    background: white;
+    margin: 50px auto;
+    padding: 20px;
+    width: 90%;
+    max-width: 500px;
+    border-radius: 10px;
+    box-shadow: 0 0 20px rgba(0,0,0,0.2);
+}
+
+.user-modal, .settings-modal {
+    background: #fff;
+    border: 2px solid #2c3e50;
+    padding: 30px;
+}
+
+.user-modal h2, .settings-modal h2 {
+    color: #2c3e50;
+    font-weight: bold;
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+.time-inputs, .user-inputs, .settings-inputs {
+    display: grid;
+    gap: 15px;
+    margin: 20px 0;
+}
+
+.user-inputs .input-group, .settings-inputs .input-group {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.user-inputs label, .settings-inputs label {
+    color: #2c3e50;
+    font-weight: bold;
+}
+
+.user-inputs input, .settings-inputs input {
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    font-size: 1em;
+    transition: border-color 0.3s;
+}
+
+.user-inputs input:focus, .settings-inputs input:focus {
+    border-color: #2ecc71;
+    outline: none;
+}
+
+.modal-buttons {
+    display: flex;
+    gap: 10px;
+    justify-content: flex-end;
+    margin-top: 20px;
+}
+
+@media (max-width: 768px) {
+    .controls-container {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+    
+    .daily-summary table {
+        width: 100%;
+    }
+    
+    #timeTable th, #timeTable td {
+        padding: 10px;
+        font-size: 0.9em;
+    }
+    
+    .month-selector {
+        flex-direction: column;
+        gap: 5px;
+    }
+    
+    .digital-clock {
+        font-size: 1em;
+    }
+}
