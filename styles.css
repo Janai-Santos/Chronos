@@ -18,6 +18,9 @@ body {
     border-radius: 10px;
     box-shadow: 0 0 20px rgba(0,0,0,0.1);
     padding: 20px;
+    display: flex;
+    flex-direction: column;
+    min-height: calc(100vh - 40px);
 }
 
 header {
@@ -28,27 +31,34 @@ header {
     border-bottom: 1px solid #eee;
 }
 
-h1 {
-    color: #2c3e50;
-    font-weight: bold;
-    position: sticky;
-    top: 0;
+.logo {
+    height: 150px;
+    width: auto;
 }
 
 .clock-container {
     flex-grow: 1;
     display: flex;
+    flex-direction: column;
+    align-items: center;
     justify-content: center;
 }
 
 .digital-clock {
-    background: #ecf0f1;
+    background: #ecf0f100;
     color: #2c3e50;
     padding: 5px 15px;
     border-radius: 10px;
-    font-size: 1.5em;
+    font-size: 3em;
     font-weight: bold;
-    border: 1px solid #ddd;
+    border: none;
+}
+
+.date-display {
+    margin-top: 5px;
+    font-size: 1em;
+    color: #2c3e50;
+    font-weight: bold;
 }
 
 .month-selector {
@@ -161,6 +171,7 @@ h1 {
 
 .table-container {
     overflow-x: auto;
+    flex-grow: 1;
 }
 
 #timeTable {
@@ -276,6 +287,34 @@ h1 {
     margin-top: 20px;
 }
 
+/* Novo estilo para o footer */
+.footer {
+    margin-top: 20px;
+    padding-top: 80px;
+    border-top: 1px solid #eee;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    font-size: 0.9em;
+    color: #ffffff;
+    background: #005062;
+}
+
+.footer-logo {
+    height: 160px;
+    width: auto;
+    margin-bottom: 80px;
+    
+}
+
+.footer p {
+    margin: 0;
+    margin-bottom: 80px;
+    font-weight: bold;
+    font-size: 17px;
+}
+
 @media (max-width: 768px) {
     .controls-container {
         flex-direction: column;
@@ -298,5 +337,10 @@ h1 {
     
     .digital-clock {
         font-size: 1em;
+    }
+    
+    .footer {
+        flex-direction: column;
+        text-align: center;
     }
 }
