@@ -29,8 +29,12 @@ class TimeClock {
 
     updateClock() {
         const now = new Date();
-        const time = now.toTimeString().slice(0,8);
+        const time = now.toTimeString().slice(0, 8);
         document.getElementById('digitalClock').textContent = time;
+
+        const options = { weekday: 'long', day: '2-digit', month: 'long', year: 'numeric' };
+        const dateString = now.toLocaleDateString('pt-BR', options);
+        document.getElementById('dateDisplay').textContent = dateString;
     }
 
     updateDailySummary() {
@@ -80,7 +84,7 @@ class TimeClock {
     registerPoint() {
         const now = new Date();
         const dateKey = now.toISOString().split('T')[0];
-        const time = now.toTimeString().slice(0,5);
+        const time = now.toTimeString().slice(0, 5);
         
         if (!this.data[dateKey]) this.data[dateKey] = {};
         const dayData = this.data[dateKey];
@@ -127,7 +131,7 @@ class TimeClock {
                 const isNegative = day.extra.startsWith('-');
                 let [h, m] = day.extra.replace('-', '').split(':').map(Number);
                 const minutes = (h * 60 + m);
-                totalMinutes += isNegative ? -minutes : minutes; // Subtrai se for negativa, soma se for positiva
+                totalMinutes += isNegative ? -minutes : minutes;
             }
         });
         const sign = totalMinutes >= 0 ? '' : '-';
@@ -203,73 +207,88 @@ class TimeClock {
     exportToPDF() {
         const { jsPDF } = window.jspdf;
         const doc = new jsPDF();
-        
-        doc.setFontSize(14);
-        doc.setFont('helvetica', 'bold');
-        doc.text('Espelho de Ponto', 10, 10);
-        doc.setFontSize(9);
-        doc.setFont('helvetica', 'bold');
-        doc.text('Nome:', 10, 20);
-        doc.setFont('helvetica', 'normal');
-        doc.text(this.userData.name || 'Não informado', 30, 20);
-        doc.setFont('helvetica', 'bold');
-        doc.text('Empresa:', 105, 20);
-        doc.setFont('helvetica', 'normal');
-        doc.text(this.userData.company || 'Não informado', 125, 20);
-        doc.setFont('helvetica', 'bold');
-        doc.text('Cargo:', 10, 25);
-        doc.setFont('helvetica', 'normal');
-        doc.text(this.userData.role || 'Não informado', 30, 25);
-        doc.setFont('helvetica', 'bold');
-        doc.text('E-mail:', 105, 25);
-        doc.setFont('helvetica', 'normal');
-        doc.text(this.userData.email || 'Não informado', 125, 25);
-        doc.text(this.currentDate.toLocaleString('pt-BR', { month: 'long', year: 'numeric' }), 190, 10, { align: 'right' });
 
-        const totalExtra = this.updateTotalExtraHours();
-        doc.setFontSize(9);
-        doc.setTextColor(0, 0, 0);
-        doc.text(`Total de Horas Extras: ${totalExtra}`, 10, 35);
+        // Carregar a imagem do logotipo
+        const logoImg = new Image();
+        logoImg.src = 'imagens/logoKronos completo.png';
 
-        const tableData = [];
-        const year = this.currentDate.getFullYear();
-        const month = this.currentDate.getMonth();
-        const daysInMonth = new Date(year, month + 1, 0).getDate();
-        
-        for (let day = 1; day <= daysInMonth; day++) {
-            const date = new Date(year, month, day);
-            const dateKey = date.toISOString().split('T')[0];
-            const dayData = this.data[dateKey] || {};
-            tableData.push([
-                `${day} - ${date.toLocaleString('pt-BR', { weekday: 'short' })}`,
-                dayData.entry || '--:--',
-                dayData.lunchOut || '--:--',
-                dayData.lunchIn || '--:--',
-                dayData.exit || '--:--',
-                dayData.extra || '--:--'
-            ]);
-        }
+        // Adicionar a imagem ao PDF quando estiver carregada
+        logoImg.onload = () => {
+            doc.addImage(logoImg, 'PNG', 10, 10, 60, 20); // Largura do logo em 60mm
 
-        doc.autoTable({
-            startY: 40,
-            head: [['Data', 'Entrada', 'Saída Almoço', 'Volta Almoço', 'Saída', 'Horas Extras']],
-            body: tableData,
-            theme: 'grid',
-            styles: { font: 'helvetica', fontSize: 8, cellPadding: 2, lineWidth: 0.1 },
-            headStyles: { fillColor: [44, 62, 80], fontStyle: 'bold', textColor: 255 },
-            columnStyles: { 
-                0: { cellWidth: 35 }, 
-                1: { cellWidth: 30 }, 
-                2: { cellWidth: 30 }, 
-                3: { cellWidth: 30 }, 
-                4: { cellWidth: 30 }, 
-                5: { cellWidth: 30 } 
-            },
-            margin: { top: 40, bottom: 10, left: 10, right: 10 },
-            pageBreak: 'auto'
-        });
+            // Título centralizado
+            doc.setFontSize(14);
+            doc.setFont('helvetica', 'bold');
+            const title = 'Espelho de Ponto';
+            const titleWidth = doc.getTextWidth(title);
+            const pageWidth = doc.internal.pageSize.getWidth();
+            doc.text(title, (pageWidth - titleWidth) / 2, 20);
 
-        doc.save(`Espelho_${this.userData.name || 'Usuario'}_${this.currentDate.getFullYear()}_${this.currentDate.getMonth() + 1}.pdf`);
+            // Dados do usuário
+            doc.setFontSize(9);
+            doc.setFont('helvetica', 'bold');
+            doc.text('Nome:', 10, 40);
+            doc.setFont('helvetica', 'normal');
+            doc.text(this.userData.name || 'Não informado', 30, 40);
+            doc.setFont('helvetica', 'bold');
+            doc.text('Empresa:', 105, 40);
+            doc.setFont('helvetica', 'normal');
+            doc.text(this.userData.company || 'Não informado', 125, 40);
+            doc.setFont('helvetica', 'bold');
+            doc.text('Cargo:', 10, 45);
+            doc.setFont('helvetica', 'normal');
+            doc.text(this.userData.role || 'Não informado', 30, 45);
+            doc.setFont('helvetica', 'bold');
+            doc.text('E-mail:', 105, 45);
+            doc.setFont('helvetica', 'normal');
+            doc.text(this.userData.email || 'Não informado', 125, 45);
+            doc.text(this.currentDate.toLocaleString('pt-BR', { month: 'long', year: 'numeric' }), 190, 10, { align: 'right' });
+
+            const totalExtra = this.updateTotalExtraHours();
+            doc.setFontSize(9);
+            doc.setTextColor(0, 0, 0);
+            doc.text(`Total de Horas Extras: ${totalExtra}`, 10, 55);
+
+            const tableData = [];
+            const year = this.currentDate.getFullYear();
+            const month = this.currentDate.getMonth();
+            const daysInMonth = new Date(year, month + 1, 0).getDate();
+            
+            for (let day = 1; day <= daysInMonth; day++) {
+                const date = new Date(year, month, day);
+                const dateKey = date.toISOString().split('T')[0];
+                const dayData = this.data[dateKey] || {};
+                tableData.push([
+                    `${day} - ${date.toLocaleString('pt-BR', { weekday: 'short' })}`,
+                    dayData.entry || '--:--',
+                    dayData.lunchOut || '--:--',
+                    dayData.lunchIn || '--:--',
+                    dayData.exit || '--:--',
+                    dayData.extra || '--:--'
+                ]);
+            }
+
+            doc.autoTable({
+                startY: 60,
+                head: [['Data', 'Entrada', 'Saída Almoço', 'Volta Almoço', 'Saída', 'Horas Extras']],
+                body: tableData,
+                theme: 'grid',
+                styles: { font: 'helvetica', fontSize: 7.8, cellPadding: 1.8, lineWidth: 0.1 },
+                headStyles: { fillColor: [44, 62, 80], fontStyle: 'bold', textColor: 255 },
+                columnStyles: { 
+                    0: { cellWidth: 35 },
+                    1: { cellWidth: 30 },
+                    2: { cellWidth: 30 },
+                    3: { cellWidth: 30 },
+                    4: { cellWidth: 30 },
+                    5: { cellWidth: 30 }
+                },
+                margin: { top: 60, bottom: 10, left: 10, right: 10 },
+                pageBreak: 'auto'
+            });
+
+            doc.save(`Espelho_${this.userData.name || 'Usuario'}_${this.currentDate.getFullYear()}_${this.currentDate.getMonth() + 1}.pdf`);
+        };
     }
 }
 
