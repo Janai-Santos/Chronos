@@ -29,6 +29,9 @@ header {
     align-items: center;
     padding-bottom: 20px;
     border-bottom: 1px solid #eee;
+    background: #2c3e50;
+    color: white;
+    padding: 20px;
 }
 
 .logo {
@@ -46,7 +49,7 @@ header {
 
 .digital-clock {
     background: #ecf0f100;
-    color: #2c3e50;
+    color: white;
     padding: 5px 15px;
     border-radius: 10px;
     font-size: 3em;
@@ -57,14 +60,8 @@ header {
 .date-display {
     margin-top: 5px;
     font-size: 1em;
-    color: #2c3e50;
+    color: white;
     font-weight: bold;
-}
-
-.month-selector {
-    display: flex;
-    align-items: center;
-    gap: 8px;
 }
 
 .btn {
@@ -83,11 +80,22 @@ header {
     filter: brightness(90%);
 }
 
-.btn-blue { background: #3498db; }
-.btn-green { background: #2ecc71; }
-.btn-red { background: #e74c3c; }
-.btn-user { background: #b3b1aa; }
-.btn-settings { background: #95a5a6; padding: 5px 10px; font-size: 0.9em; }
+.btn-green {
+    background: #2ecc71;
+}
+
+.btn-red {
+    background: #e74c3c;
+}
+
+.btn-user {
+    background: transparent;
+}
+
+.btn-user img {
+    width: 45px;
+    height: 45px;
+}
 
 .btn-nav {
     background: #ecf0f1;
@@ -98,8 +106,8 @@ header {
 }
 
 .btn-register {
-    background: #13c6e6;
-    padding: 10px 20px;
+    background: #2AE2DD;
+    padding: 15px 20px;
     border-radius: 25px;
     font-size: 1.1em;
     font-weight: bold;
@@ -109,7 +117,7 @@ header {
 
 .btn-export {
     background: #c74f4f;
-    padding: 6px 12px;
+    padding: 15px 12px;
     font-size: 0.9em;
 }
 
@@ -158,8 +166,14 @@ header {
     color: #e74c3c;
 }
 
-.extra-hours {
+.extra-hours-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
     margin: 20px 0;
+}
+
+.extra-hours {
     font-size: 1.2em;
     color: #000;
     font-weight: bold;
@@ -167,6 +181,12 @@ header {
 
 .extra-hours span {
     color: #45aa6f;
+}
+
+.month-selector {
+    display: flex;
+    align-items: center;
+    gap: 8px;
 }
 
 .table-container {
@@ -237,45 +257,47 @@ header {
     box-shadow: 0 0 20px rgba(0,0,0,0.2);
 }
 
-.user-modal, .settings-modal {
-    background: #fff;
-    border: 2px solid #2c3e50;
+.user-modal {
+    background: #2c3e50;
+    border: 2px solid #ffffff;
     padding: 30px;
 }
 
-.user-modal h2, .settings-modal h2 {
+.user-modal h2 {
     color: #2c3e50;
     font-weight: bold;
     margin-bottom: 20px;
     text-align: center;
 }
 
-.time-inputs, .user-inputs, .settings-inputs {
+.time-inputs, .user-inputs {
     display: grid;
     gap: 15px;
     margin: 20px 0;
 }
 
-.user-inputs .input-group, .settings-inputs .input-group {
+.user-inputs .input-group {
     display: flex;
     flex-direction: column;
     gap: 5px;
 }
 
-.user-inputs label, .settings-inputs label {
+.user-inputs label {
     color: #2c3e50;
     font-weight: bold;
 }
 
-.user-inputs input, .settings-inputs input {
+.user-inputs input {
     padding: 10px;
-    border: 1px solid #ddd;
+    border: 1px solid #ffffff;
     border-radius: 5px;
     font-size: 1em;
     transition: border-color 0.3s;
+    background: #2c3e50;
+    color: #ffff;
 }
 
-.user-inputs input:focus, .settings-inputs input:focus {
+.user-inputs input:focus {
     border-color: #2ecc71;
     outline: none;
 }
@@ -287,7 +309,6 @@ header {
     margin-top: 20px;
 }
 
-/* Novo estilo para o footer */
 .footer {
     margin-top: 20px;
     padding-top: 80px;
@@ -305,7 +326,6 @@ header {
     height: 160px;
     width: auto;
     margin-bottom: 80px;
-    
 }
 
 .footer p {
@@ -330,9 +350,9 @@ header {
         font-size: 0.9em;
     }
     
-    .month-selector {
+    .extra-hours-container {
         flex-direction: column;
-        gap: 5px;
+        gap: 10px;
     }
     
     .digital-clock {
