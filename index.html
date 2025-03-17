@@ -5,7 +5,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Kronos</title>
     <link rel="stylesheet" href="styles.css">
+    <!-- Linha adicionada para o favicon -->
+    <link rel="icon" type="image/png" href="imagens/favicon.png">
 </head>
+
 <body>
     <div class="container">
         <header>
@@ -14,12 +17,10 @@
                 <div class="digital-clock" id="digitalClock">00:00:00</div>
                 <div class="date-display" id="dateDisplay"></div>
             </div>
-            <div class="month-selector">
-                <button id="prevMonth" class="btn btn-nav">◄</button>
-                <span id="currentMonth"></span>
-                <button id="nextMonth" class="btn btn-nav">►</button>
-                <button id="userSettings" class="btn btn-user">👤</button>
-            </div>
+            <!-- Modificação no botão do usuário para mostrar mensagem ao passar o mouse -->
+            <button id="userSettings" class="btn btn-user" title="Configurar perfil">
+                <img src="imagens/avatar.png" alt="Avatar do usuário">
+            </button>
         </header>
 
         <div class="controls-container">
@@ -51,8 +52,15 @@
             <button id="exportPDF" class="btn btn-export"><span class="pdf-icon">📄</span> Exportar PDF</button>
         </div>
 
-        <div class="extra-hours">
-            Horas Extras Totais: <span id="totalExtraHours">00:00</span>
+        <div class="extra-hours-container">
+            <div class="extra-hours">
+                Horas Extras Totais: <span id="totalExtraHours">00:00</span>
+            </div>
+            <div class="month-selector">
+                <button id="prevMonth" class="btn btn-nav">◄</button>
+                <span id="currentMonth"></span>
+                <button id="nextMonth" class="btn btn-nav">►</button>
+            </div>
         </div>
 
         <div class="table-container">
@@ -115,7 +123,6 @@
             </div>
         </div>
 
-        <!-- Novo footer -->
         <footer class="footer">
             <img src="imagens/logoKronos completo.png" alt="Logo Kronos" class="footer-logo">
             <p>© 2025 Kronos - Todos os direitos reservados. Criado por Janaí Rodrigues.</p>
