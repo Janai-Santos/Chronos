@@ -7,128 +7,122 @@
     <link rel="stylesheet" href="styles.css">
     <link rel="icon" type="image/png" href="imagens/favicon.png">
 </head>
-
 <body>
-    <div class="container">
-        <header>
-            <img src="imagens/logoKronos completo.png" alt="Logo Kronos" class="logo">
-            <div class="clock-container">
-                <div class="digital-clock" id="digitalClock">00:00:00</div>
-                <div class="date-display" id="dateDisplay"></div>
-            </div>
-            <button id="userSettings" class="btn btn-user" title="Configurar perfil">
-                <img src="imagens/avatar.png" alt="Avatar do usuário">
-            </button>
-        </header>
-
-        <div class="controls-container">
-            <button id="registerPoint" class="btn btn-register"><span class="clock-icon">🕒</span> Registrar Ponto</button>
-            <div class="daily-summary" id="dailySummary">
-                <table>
-                    <thead>
-                        <tr>
-                            <th class="highlight-today">Hoje</th>
-                            <th>Entrada</th>
-                            <th>Saída Almoço</th>
-                            <th>Volta Almoço</th>
-                            <th>Saída</th>
-                            <th class="highlight-extra">Horas Extras</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td></td>
-                            <td><span id="todayEntry">--:--</span></td>
-                            <td><span id="todayLunchOut">--:--</span></td>
-                            <td><span id="todayLunchIn">--:--</span></td>
-                            <td><span id="todayExit">--:--</span></td>
-                            <td id="todayExtra" class="extra-hours">--:--</td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-            <button id="exportPDF" class="btn btn-export"><span class="pdf-icon">📄</span> Exportar PDF</button>
+    <header>
+        <img src="imagens/logoKronos completo.png" alt="Logo Kronos" class="logo">
+        <div class="clock-container">
+            <div class="digital-clock" id="digitalClock">00:00:00</div>
+            <div class="date-display" id="dateDisplay"></div>
         </div>
+        <button id="userSettings" class="btn btn-user" title="Configurar perfil">
+            <img src="imagens/avatar.png" alt="Avatar do usuário">
+        </button>
+    </header>
 
-        <div class="extra-hours-container">
-            <div class="extra-hours">
-                Mês atual: <span id="monthlyExtraHours">00:00</span>
-            </div>
-            <div class="extra-hours">
-                Horas totais: <span id="totalExtraHours">00:00</span>
-            </div>
-            <div class="month-selector">
-                <button id="prevMonth" class="btn btn-nav">◄</button>
-                <span id="currentMonth"></span>
-                <button id="nextMonth" class="btn btn-nav">►</button>
-            </div>
-        </div>
-
-        <div class="table-container">
-            <table id="timeTable">
+    <div class="controls-container">
+        <button id="registerPoint" class="btn btn-register"><span class="clock-icon">🕒</span> Registrar Ponto</button>
+        <div class="daily-summary" id="dailySummary">
+            <table>
                 <thead>
                     <tr>
-                        <th>Data</th>
+                        <th class="highlight-today">Hoje</th>
                         <th>Entrada</th>
                         <th>Saída Almoço</th>
                         <th>Volta Almoço</th>
                         <th>Saída</th>
-                        <th>Horas Extras</th>
+                        <th class="highlight-extra">Horas Extras</th>
                     </tr>
                 </thead>
-                <tbody id="tableBody"></tbody>
+                <tbody>
+                    <tr>
+                        <td></td>
+                        <td><span id="todayEntry">--:--</span></td>
+                        <td><span id="todayLunchOut">--:--</span></td>
+                        <td><span id="todayLunchIn">--:--</span></td>
+                        <td><span id="todayExit">--:--</span></td>
+                        <td id="todayExtra" class="extra-hours">--:--</td>
+                    </tr>
+                </tbody>
             </table>
         </div>
-
-        <div id="editModal" class="modal">
-            <div class="modal-content">
-                <h2>Editar Ponto - <span id="editDate"></span></h2>
-                <div class="time-inputs">
-                    <label>Entrada: <input type="time" id="editEntry" step="60"></label>
-                    <label>Saída Almoço: <input type="time" id="editLunchOut" step="60"></label>
-                    <label>Volta Almoço: <input type="time" id="editLunchIn" step="60"></label>
-                    <label>Saída: <input type="time" id="editExit" step="60"></label>
-                </div>
-                <div class="modal-buttons">
-                    <button id="saveEdit" class="btn btn-green">Salvar</button>
-                    <button id="closeModal" class="btn btn-red">Fechar</button>
-                </div>
-            </div>
-        </div>
-
-        <div id="userModal" class="modal">
-            <div class="modal-content user-modal">
-                <h2>Dados do Usuário</h2>
-                <div class="user-inputs">
-                    <div class="input-group">
-                        <label for="userCompany">Empresa</label>
-                        <input type="text" id="userCompany" placeholder="Digite o nome da empresa">
-                    </div>
-                    <div class="input-group">
-                        <label for="userName">Nome Completo</label>
-                        <input type="text" id="userName" placeholder="Digite seu nome completo">
-                    </div>
-                    <div class="input-group">
-                        <label for="userRole">Cargo</label>
-                        <input type="text" id="userRole" placeholder="Digite seu cargo">
-                    </div>
-                    <div class="input-group">
-                        <label for="userEmail">E-mail</label>
-                        <input type="email" id="userEmail" placeholder="Digite seu e-mail">
-                    </div>
-                </div>
-                <div class="modal-buttons">
-                    <button id="saveUser" class="btn btn-green">Salvar</button>
-                    <button id="closeUserModal" class="btn btn-red">Fechar</button>
-                </div>
-            </div>
-        </div>
-
-        <footer class="footer">
-            <img src="imagens/logoKronos completo.png" alt="Logo Kronos" class="footer-logo">
-            <p>© 2025 Kronos - Todos os direitos reservados. Criado por Janaí Rodrigues.</p>
-        </footer>
+        <button id="exportPDF" class="btn btn-export"><span class="pdf-icon">📄</span> Exportar PDF</button>
     </div>
+
+    <div class="extra-hours-container">
+        <div class="extra-hours">Mês atual: <span id="monthlyExtraHours">00:00</span></div>
+        <div class="extra-hours">Horas totais: <span id="totalExtraHours">00:00</span></div>
+        <div class="month-selector">
+            <button id="prevMonth" class="btn btn-nav">◄</button>
+            <span id="currentMonth"></span>
+            <button id="nextMonth" class="btn btn-nav">►</button>
+        </div>
+    </div>
+
+    <div class="table-container">
+        <table id="timeTable">
+            <thead>
+                <tr>
+                    <th>Data</th>
+                    <th>Entrada</th>
+                    <th>Saída Almoço</th>
+                    <th>Volta Almoço</th>
+                    <th>Saída</th>
+                    <th>Horas Extras</th>
+                </tr>
+            </thead>
+            <tbody id="tableBody"></tbody>
+        </table>
+    </div>
+
+    <div id="editModal" class="modal">
+        <div class="modal-content">
+            <h2>Editar Ponto - <span id="editDate"></span></h2>
+            <div class="time-inputs">
+                <label>Entrada: <input type="time" id="editEntry" step="60"></label>
+                <label>Saída Almoço: <input type="time" id="editLunchOut" step="60"></label>
+                <label>Volta Almoço: <input type="time" id="editLunchIn" step="60"></label>
+                <label>Saída: <input type="time" id="editExit" step="60"></label>
+            </div>
+            <div class="modal-buttons">
+                <button id="saveEdit" class="btn btn-green">Salvar</button>
+                <button id="closeModal" class="btn btn-red">Fechar</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="userModal" class="modal">
+        <div class="modal-content user-modal">
+            <h2>Dados do Usuário</h2>
+            <div class="user-inputs">
+                <div class="input-group">
+                    <label for="userCompany">Empresa</label>
+                    <input type="text" id="userCompany" placeholder="Digite o nome da empresa">
+                </div>
+                <div class="input-group">
+                    <label for="userName">Nome Completo</label>
+                    <input type="text" id="userName" placeholder="Digite seu nome completo">
+                </div>
+                <div class="input-group">
+                    <label for="userRole">Cargo</label>
+                    <input type="text" id="userRole" placeholder="Digite seu cargo">
+                </div>
+                <div class="input-group">
+                    <label for="userEmail">E-mail</label>
+                    <input type="email" id="userEmail" placeholder="Digite seu e-mail">
+                </div>
+            </div>
+            <div class="modal-buttons">
+                <button id="saveUser" class="btn btn-green">Salvar</button>
+                <button id="closeUserModal" class="btn btn-red">Fechar</button>
+            </div>
+        </div>
+    </div>
+
+    <footer class="footer">
+        <img src="imagens/logoKronos completo.png" alt="Logo Kronos" class="footer-logo">
+        <p>© 2025 Kronos - Todos os direitos reservados. Criado por Janaí Rodrigues.</p>
+    </footer>
+
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.23/jspdf.plugin.autotable.min.js"></script>
     <script src="script.js"></script>
