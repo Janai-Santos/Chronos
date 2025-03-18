@@ -5,37 +5,28 @@
     font-family: sans-serif;
 }
 
-body {
+html, body {
+    height: 100%;
+    width: 100%;
     background: #f0f2f5;
-    min-height: 100vh;
-    padding: 20px;
-}
-
-.container {
-    max-width: 1200px;
-    margin: 0 auto;
-    background: white;
-    border-radius: 10px;
-    box-shadow: 0 0 20px rgba(0,0,0,0.1);
-    padding: 20px;
-    display: flex;
-    flex-direction: column;
-    min-height: calc(100vh - 40px);
+    overflow-x: hidden;
 }
 
 header {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding-bottom: 20px;
-    border-bottom: 1px solid #eee;
+    padding: 1vw 2vw;
     background: #2c3e50;
     color: white;
-    padding: 20px;
+    width: 100%;
+    position: sticky;
+    top: 0;
+    z-index: 10;
 }
 
 .logo {
-    height: 150px;
+    height: clamp(80px, 15vw, 150px);
     width: auto;
 }
 
@@ -48,24 +39,22 @@ header {
 }
 
 .digital-clock {
-    background: #ecf0f100;
+    background: transparent;
     color: white;
-    padding: 5px 15px;
-    border-radius: 10px;
-    font-size: 3em;
+    padding: 0.5vw 1vw;
+    font-size: clamp(1.5em, 5vw, 3em);
     font-weight: bold;
-    border: none;
 }
 
 .date-display {
-    margin-top: 5px;
-    font-size: 1em;
+    margin-top: 0.5vw;
+    font-size: clamp(0.8em, 2vw, 1em);
     color: white;
     font-weight: bold;
 }
 
 .btn {
-    padding: 8px 15px;
+    padding: 0.5vw 1vw;
     border: none;
     border-radius: 5px;
     cursor: pointer;
@@ -73,77 +62,42 @@ header {
     font-weight: bold;
     display: flex;
     align-items: center;
-    gap: 5px;
+    gap: 0.5vw;
 }
 
 .btn:hover {
     filter: brightness(90%);
 }
 
-.btn-green {
-    background: #2ecc71;
-}
+.btn-green { background: #2ecc71; }
+.btn-red { background: #e74c3c; }
+.btn-user { background: transparent; }
+.btn-user img { width: clamp(30px, 5vw, 45px); height: auto; }
+.btn-nav { background: #ecf0f1; color: #2c3e50; padding: 0.3vw 0.6vw; font-size: clamp(0.7em, 1.5vw, 0.9em); }
+.btn-register { background: #2AE2DD; padding: clamp(10px, 2vw, 15px) clamp(15px, 3vw, 20px); font-size: clamp(0.9em, 2vw, 1.1em); text-transform: uppercase; letter-spacing: 1px; }
+.btn-export { background: #c74f4f; padding: clamp(10px, 2vw, 15px) clamp(8px, 1.5vw, 12px); font-size: clamp(0.7em, 1.5vw, 0.9em); }
 
-.btn-red {
-    background: #e74c3c;
-}
-
-.btn-user {
-    background: transparent;
-}
-
-.btn-user img {
-    width: 45px;
-    height: 45px;
-}
-
-.btn-nav {
-    background: #ecf0f1;
-    color: #2c3e50;
-    padding: 5px 10px;
-    font-size: 0.9em;
-    border-radius: 3px;
-}
-
-.btn-register {
-    background: #2AE2DD;
-    padding: 15px 20px;
-    border-radius: 25px;
-    font-size: 1.1em;
-    font-weight: bold;
-    text-transform: uppercase;
-    letter-spacing: 1px;
-}
-
-.btn-export {
-    background: #c74f4f;
-    padding: 15px 12px;
-    font-size: 0.9em;
-}
-
-.btn-register:hover, .btn-export:hover {
-    filter: brightness(90%);
-}
-
-.clock-icon, .pdf-icon {
-    font-size: 1.2em;
-}
+.clock-icon, .pdf-icon { font-size: clamp(1em, 2vw, 1.2em); }
 
 .controls-container {
-    margin: 20px 0;
+    margin: 2vw;
     display: flex;
+    flex-wrap: wrap;
     justify-content: space-between;
     align-items: center;
-    gap: 15px;
+    gap: 1vw;
+    width: calc(100% - 4vw);
 }
 
 .daily-summary table {
     border-collapse: collapse;
-    font-size: 1em;
+    font-size: clamp(0.8em, 2vw, 1em);
+    width: 100%;
+    max-width: 100%;
 }
 
 .daily-summary th, .daily-summary td {
-    padding: 4px 10px;
+    padding: clamp(3px, 1vw, 8px) clamp(5px, 1.5vw, 10px);
     text-align: center;
 }
 
@@ -153,56 +107,40 @@ header {
     background: #2c3e50;
 }
 
-.daily-summary .highlight-today {
-    background: #4d6680; /* Azul para "Hoje" */
-}
-
-.daily-summary .highlight-extra {
-    background: #4d6680; /* Laranja para "Horas Extras" */
-}
-
-.daily-summary td {
-    background: #f8f9fa;
-    border-radius: 4px;
-}
-
-.daily-summary .extra-hours {
-    color: #45aa6f;
-}
-
-.daily-summary .negative-hours {
-    color: #e74c3c;
-}
+.daily-summary .highlight-today { background: #4d6680; }
+.daily-summary .highlight-extra { background: #4d6680; }
+.daily-summary td { background: #f8f9fa; border-radius: 4px; }
+.daily-summary .extra-hours { color: #45aa6f; }
+.daily-summary .negative-hours { color: #e74c3c; }
 
 .extra-hours-container {
     display: flex;
+    flex-wrap: wrap;
     justify-content: space-between;
     align-items: center;
-    margin: 20px 0;
-    gap: 20px;
+    margin: 2vw;
+    gap: 1vw;
+    width: calc(100% - 4vw);
 }
 
 .extra-hours {
-    font-size: 1.2em;
+    font-size: clamp(1em, 2.5vw, 1.2em);
     color: #000;
     font-weight: bold;
 }
 
-.extra-hours span.positive {
-    color: #45aa6f;
-}
-
-.extra-hours span.negative {
-    color: #e74c3c;
-}
+.extra-hours span.positive { color: #45aa6f; }
+.extra-hours span.negative { color: #e74c3c; }
 
 .month-selector {
     display: flex;
     align-items: center;
-    gap: 8px;
+    gap: 0.5vw;
 }
 
 .table-container {
+    width: calc(100% - 4vw);
+    margin: 2vw;
     overflow-x: auto;
     flex-grow: 1;
 }
@@ -211,18 +149,16 @@ header {
     width: 100%;
     border-collapse: separate;
     border-spacing: 0;
-    margin: 20px 0;
     background: #fff;
     border-radius: 8px;
     overflow: hidden;
 }
 
 #timeTable th, #timeTable td {
-    padding: 18px;
+    padding: clamp(10px, 2vw, 18px);
     text-align: center;
     border-bottom: 1px solid #eee;
-    font-weight: normal;
-    font-size: 1.1em;
+    font-size: clamp(0.9em, 2vw, 1.1em);
 }
 
 #timeTable th {
@@ -232,27 +168,11 @@ header {
     letter-spacing: 1px;
 }
 
-#timeTable td:first-child {
-    text-align: left; /* Alinhar a coluna "Data" à esquerda */
-}
-
-#timeTable td.extra-hours {
-    color: #45aa6f;
-}
-
-#timeTable td.negative-hours {
-    color: #e74c3c;
-}
-
-#timeTable tr.weekend {
-    background: #e0e0e0;
-}
-
-#timeTable tr:hover {
-    background: #ecf0f1;
-    cursor: pointer;
-    transition: background 0.2s;
-}
+#timeTable td:first-child { text-align: left; }
+#timeTable td.extra-hours { color: #45aa6f; }
+#timeTable td.negative-hours { color: #e74c3c; }
+#timeTable tr.weekend { background: #e0e0e0; }
+#timeTable tr:hover { background: #ecf0f1; cursor: pointer; transition: background 0.2s; }
 
 .modal {
     display: none;
@@ -262,14 +182,14 @@ header {
     width: 100%;
     height: 100%;
     background: rgba(0,0,0,0.5);
+    z-index: 20;
 }
 
 .modal-content {
     background: white;
-    margin: 50px auto;
-    padding: 20px;
-    width: 90%;
-    max-width: 500px;
+    margin: 5vh auto;
+    padding: clamp(15px, 3vw, 20px);
+    width: clamp(300px, 90vw, 500px);
     border-radius: 10px;
     box-shadow: 0 0 20px rgba(0,0,0,0.2);
 }
@@ -277,121 +197,90 @@ header {
 .user-modal {
     background: #2c3e50;
     border: 2px solid #ffffff;
-    padding: 30px;
+    padding: clamp(20px, 4vw, 30px);
 }
 
 .user-modal h2 {
-    color: #2c3e50;
+    color: #ffffff;
     font-weight: bold;
-    margin-bottom: 20px;
+    margin-bottom: 1vw;
     text-align: center;
 }
 
 .time-inputs, .user-inputs {
     display: grid;
-    gap: 15px;
-    margin: 20px 0;
+    gap: 1vw;
+    margin: 1vw 0;
 }
 
 .time-inputs input[type="time"] {
-    padding: 5px;
+    padding: 0.5vw;
     border: 1px solid #ccc;
     border-radius: 4px;
-    font-size: 1em;
-    width: 100px;
-    background: white;
-}
-
-.time-inputs input[type="time"]:focus {
-    border-color: #2ecc71;
-    outline: none;
+    font-size: clamp(0.9em, 2vw, 1em);
+    width: clamp(80px, 20vw, 100px);
 }
 
 .user-inputs .input-group {
     display: flex;
     flex-direction: column;
-    gap: 5px;
+    gap: 0.5vw;
 }
 
-.user-inputs label {
-    color: #2c3e50;
-    font-weight: bold;
-}
-
+.user-inputs label { color: #ffffff; font-weight: bold; }
 .user-inputs input {
-    padding: 10px;
+    padding: clamp(8px, 1.5vw, 10px);
     border: 1px solid #ffffff;
     border-radius: 5px;
-    font-size: 1em;
-    transition: border-color 0.3s;
+    font-size: clamp(0.9em, 2vw, 1em);
     background: #2c3e50;
     color: #ffff;
 }
 
-.user-inputs input:focus {
-    border-color: #2ecc71;
-    outline: none;
-}
-
 .modal-buttons {
     display: flex;
-    gap: 10px;
+    gap: 0.5vw;
     justify-content: flex-end;
-    margin-top: 20px;
+    margin-top: 1vw;
 }
 
 .footer {
-    margin-top: 20px;
-    padding-top: 80px;
+    padding: 2vw;
     border-top: 1px solid #eee;
     display: flex;
+    flex-wrap: wrap;
     align-items: center;
     justify-content: center;
-    gap: 10px;
-    font-size: 0.9em;
+    gap: 1vw;
+    font-size: clamp(0.8em, 1.5vw, 0.9em);
     color: #ffffff;
     background: #005062;
+    width: 100%;
 }
 
 .footer-logo {
-    height: 160px;
+    height: clamp(100px, 20vw, 160px);
     width: auto;
-    margin-bottom: 80px;
 }
 
 .footer p {
     margin: 0;
-    margin-bottom: 80px;
     font-weight: bold;
-    font-size: 17px;
+    font-size: clamp(12px, 2vw, 17px);
 }
 
 @media (max-width: 768px) {
-    .controls-container {
-        flex-direction: column;
-        align-items: flex-start;
-    }
-    
-    .daily-summary table {
-        width: 100%;
-    }
-    
-    #timeTable th, #timeTable td {
-        padding: 10px;
-        font-size: 0.9em;
-    }
-    
-    .extra-hours-container {
-        flex-direction: column;
-        gap: 10px;
-    }
-    
-    .digital-clock {
-        font-size: 1em;
-    }
-    
-    .footer {
-        flex-direction: column;
-        text-align: center;
-    }
+    header { flex-wrap: wrap; padding: 2vw; }
+    .controls-container { flex-direction: column; align-items: stretch; }
+    .daily-summary table { font-size: clamp(0.7em, 1.8vw, 0.9em); }
+    .extra-hours-container { flex-direction: column; align-items: stretch; }
+    .table-container { margin: 2vw 0; }
+    .footer { flex-direction: column; text-align: center; }
+}
+
+@media (max-width: 480px) {
+    .btn { padding: 1vw 2vw; font-size: clamp(0.8em, 2.5vw, 1em); }
+    .digital-clock { font-size: clamp(1.2em, 4vw, 2em); }
+    .date-display { font-size: clamp(0.6em, 1.5vw, 0.8em); }
+    #timeTable th, #timeTable td { padding: 1vw; font-size: clamp(0.7em, 1.8vw, 0.9em); }
 }
