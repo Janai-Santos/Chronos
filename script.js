@@ -245,22 +245,18 @@ class TimeClock {
         const { jsPDF } = window.jspdf;
         const doc = new jsPDF();
 
-        // Adicionar cabeçalho similar ao site
-        doc.setFillColor(44, 62, 80); // #2c3e50
+        doc.setFillColor(44, 62, 80);
         doc.rect(0, 0, 210, 30, 'F');
         
-        // Carregar a imagem do logotipo
         const logoImg = new Image();
         logoImg.src = 'imagens/logoKronos completo.png';
         logoImg.onload = () => {
             doc.addImage(logoImg, 'PNG', 10, 5, 60, 20);
             
-            // Data no cabeçalho
             doc.setFontSize(10);
             doc.setTextColor(255, 255, 255);
             doc.text(this.currentDate.toLocaleString('pt-BR', { month: 'long', year: 'numeric' }), 190, 10, { align: 'right' });
 
-            // Título em branco
             doc.setFontSize(14);
             doc.setTextColor(255, 255, 255);
             doc.setFont('helvetica', 'bold');
@@ -269,7 +265,6 @@ class TimeClock {
             const pageWidth = doc.internal.pageSize.getWidth();
             doc.text(title, (pageWidth - titleWidth) / 2, 20);
 
-            // Dados do usuário
             doc.setFontSize(9);
             doc.setTextColor(0, 0, 0);
             doc.setFont('helvetica', 'bold');
@@ -289,7 +284,6 @@ class TimeClock {
             doc.setFont('helvetica', 'normal');
             doc.text(this.userData.email || 'Não informado', 125, 45);
 
-            // Horas extras do mês e totais
             const monthlyExtra = this.updateMonthlyExtraHours();
             const totalExtra = this.updateTotalExtraHours();
             doc.setFontSize(9);
@@ -325,7 +319,7 @@ class TimeClock {
                 styles: { font: 'helvetica', fontSize: 7.8, cellPadding: 1.8, lineWidth: 0.1 },
                 headStyles: { fillColor: [44, 62, 80], fontStyle: 'bold', textColor: 255 },
                 columnStyles: { 
-                    0: { cellWidth: 40, halign: 'left' }, // Alinhar "Data" à esquerda
+                    0: { cellWidth: 40, halign: 'left' },
                     1: { cellWidth: 30 },
                     2: { cellWidth: 30 },
                     3: { cellWidth: 30 },
