@@ -10,6 +10,7 @@ class TimeClock {
         this.renderTable();
         this.setupEventListeners();
         this.updateTotalExtraHours();
+        this.updateMonthlyExtraHours();
         this.updateDailySummary();
         this.updateClock();
         setInterval(() => this.updateClock(), 1000);
@@ -45,7 +46,7 @@ class TimeClock {
         document.getElementById('todayLunchIn').textContent = dayData.lunchIn || '--:--';
         document.getElementById('todayExit').textContent = dayData.exit || '--:--';
         const extraCell = document.getElementById('todayExtra');
-        extraCell.textContent = dayData.extra || '--:--';
+        extraCell.textContent = dayData.extra ? (dayData.extra.startsWith('-') ? dayData.extra.replace('-', '- ') : dayData.extra) : '--:--';
         extraCell.className = dayData.extra?.startsWith('-') ? 'negative-hours' : 'extra-hours';
     }
 
@@ -67,18 +68,20 @@ class TimeClock {
             const tr = document.createElement('tr');
             if (isWeekend) tr.classList.add('weekend');
             const extraClass = dayData.extra?.startsWith('-') ? 'negative-hours' : 'extra-hours';
+            const extraDisplay = dayData.extra ? (dayData.extra.startsWith('-') ? dayData.extra.replace('-', '- ') : dayData.extra) : '--:--';
             tr.innerHTML = `
-                <td>${day} - ${date.toLocaleString('pt-BR', { weekday: 'short' })}</td>
+                <td>${day} - ${date.toLocaleString('pt-BR', { weekday: 'long' })}</td>
                 <td>${dayData.entry || '--:--'}</td>
                 <td>${dayData.lunchOut || '--:--'}</td>
                 <td>${dayData.lunchIn || '--:--'}</td>
                 <td>${dayData.exit || '--:--'}</td>
-                <td class="${extraClass}">${dayData.extra || '--:--'}</td>
+                <td class="${extraClass}">${extraDisplay}</td>
             `;
             tr.addEventListener('click', () => this.openEditModal(dateKey));
             tbody.appendChild(tr);
         }
         this.updateDailySummary();
+        this.updateMonthlyExtraHours();
     }
 
     registerPoint() {
@@ -122,6 +125,7 @@ class TimeClock {
         dayData.extra = extraMinutes >= 0 ? `${hours}:${minutes}` : `-${hours}:${minutes}`;
 
         this.updateTotalExtraHours();
+        this.updateMonthlyExtraHours();
     }
 
     updateTotalExtraHours() {
@@ -134,10 +138,38 @@ class TimeClock {
                 totalMinutes += isNegative ? -minutes : minutes;
             }
         });
-        const sign = totalMinutes >= 0 ? '' : '-';
+        const sign = totalMinutes >= 0 ? '' : '- ';
         const hours = Math.floor(Math.abs(totalMinutes) / 60).toString().padStart(2, '0');
         const minutes = (Math.abs(totalMinutes) % 60).toString().padStart(2, '0');
-        document.getElementById('totalExtraHours').textContent = `${sign}${hours}:${minutes}`;
+        const totalHoursElement = document.getElementById('totalExtraHours');
+        totalHoursElement.textContent = `${sign}${hours}:${minutes}`;
+        totalHoursElement.className = totalMinutes >= 0 ? 'positive' : 'negative';
+        return `${sign}${hours}:${minutes}`;
+    }
+
+    updateMonthlyExtraHours() {
+        let monthlyMinutes = 0;
+        const year = this.currentDate.getFullYear();
+        const month = this.currentDate.getMonth();
+        const daysInMonth = new Date(year, month + 1, 0).getDate();
+
+        for (let day = 1; day <= daysInMonth; day++) {
+            const date = new Date(year, month, day);
+            const dateKey = date.toISOString().split('T')[0];
+            const dayData = this.data[dateKey] || {};
+            if (dayData.extra) {
+                const isNegative = dayData.extra.startsWith('-');
+                let [h, m] = dayData.extra.replace('-', '').split(':').map(Number);
+                const minutes = (h * 60 + m);
+                monthlyMinutes += isNegative ? -minutes : minutes;
+            }
+        }
+        const sign = monthlyMinutes >= 0 ? '' : '- ';
+        const hours = Math.floor(Math.abs(monthlyMinutes) / 60).toString().padStart(2, '0');
+        const minutes = (Math.abs(monthlyMinutes) % 60).toString().padStart(2, '0');
+        const monthlyHoursElement = document.getElementById('monthlyExtraHours');
+        monthlyHoursElement.textContent = `${sign}${hours}:${minutes}`;
+        monthlyHoursElement.className = monthlyMinutes >= 0 ? 'positive' : 'negative';
         return `${sign}${hours}:${minutes}`;
     }
 
@@ -155,12 +187,17 @@ class TimeClock {
 
     saveEdit() {
         const dateKey = document.getElementById('editModal').dataset.date;
-        this.data[dateKey] = {
-            entry: document.getElementById('editEntry').value,
-            lunchOut: document.getElementById('editLunchOut').value,
-            lunchIn: document.getElementById('editLunchIn').value,
-            exit: document.getElementById('editExit').value
-        };
+        const entry = document.getElementById('editEntry').value;
+        const lunchOut = document.getElementById('editLunchOut').value;
+        const lunchIn = document.getElementById('editLunchIn').value;
+        const exit = document.getElementById('editExit').value;
+
+        this.data[dateKey] = {};
+        if (entry) this.data[dateKey].entry = entry;
+        if (lunchOut) this.data[dateKey].lunchOut = lunchOut;
+        if (lunchIn) this.data[dateKey].lunchIn = lunchIn;
+        if (exit) this.data[dateKey].exit = exit;
+
         this.calculateExtraHours(dateKey);
         this.saveData();
         this.closeModal();
@@ -208,16 +245,24 @@ class TimeClock {
         const { jsPDF } = window.jspdf;
         const doc = new jsPDF();
 
+        // Adicionar cabeçalho similar ao site
+        doc.setFillColor(44, 62, 80); // #2c3e50
+        doc.rect(0, 0, 210, 30, 'F');
+        
         // Carregar a imagem do logotipo
         const logoImg = new Image();
         logoImg.src = 'imagens/logoKronos completo.png';
-
-        // Adicionar a imagem ao PDF quando estiver carregada
         logoImg.onload = () => {
-            doc.addImage(logoImg, 'PNG', 10, 10, 60, 20); // Largura do logo em 60mm
+            doc.addImage(logoImg, 'PNG', 10, 5, 60, 20);
+            
+            // Data no cabeçalho
+            doc.setFontSize(10);
+            doc.setTextColor(255, 255, 255);
+            doc.text(this.currentDate.toLocaleString('pt-BR', { month: 'long', year: 'numeric' }), 190, 10, { align: 'right' });
 
-            // Título centralizado
+            // Título em branco
             doc.setFontSize(14);
+            doc.setTextColor(255, 255, 255);
             doc.setFont('helvetica', 'bold');
             const title = 'Espelho de Ponto';
             const titleWidth = doc.getTextWidth(title);
@@ -226,6 +271,7 @@ class TimeClock {
 
             // Dados do usuário
             doc.setFontSize(9);
+            doc.setTextColor(0, 0, 0);
             doc.setFont('helvetica', 'bold');
             doc.text('Nome:', 10, 40);
             doc.setFont('helvetica', 'normal');
@@ -242,12 +288,14 @@ class TimeClock {
             doc.text('E-mail:', 105, 45);
             doc.setFont('helvetica', 'normal');
             doc.text(this.userData.email || 'Não informado', 125, 45);
-            doc.text(this.currentDate.toLocaleString('pt-BR', { month: 'long', year: 'numeric' }), 190, 10, { align: 'right' });
 
+            // Horas extras do mês e totais
+            const monthlyExtra = this.updateMonthlyExtraHours();
             const totalExtra = this.updateTotalExtraHours();
             doc.setFontSize(9);
             doc.setTextColor(0, 0, 0);
-            doc.text(`Total de Horas Extras: ${totalExtra}`, 10, 55);
+            doc.text(`Horas Extras do Mês: ${monthlyExtra}`, 10, 55);
+            doc.text(`Horas Extras Totais: ${totalExtra}`, 70, 55);
 
             const tableData = [];
             const year = this.currentDate.getFullYear();
@@ -258,13 +306,14 @@ class TimeClock {
                 const date = new Date(year, month, day);
                 const dateKey = date.toISOString().split('T')[0];
                 const dayData = this.data[dateKey] || {};
+                const extraDisplay = dayData.extra ? (dayData.extra.startsWith('-') ? dayData.extra.replace('-', '- ') : dayData.extra) : '--:--';
                 tableData.push([
-                    `${day} - ${date.toLocaleString('pt-BR', { weekday: 'short' })}`,
+                    `${day} - ${date.toLocaleString('pt-BR', { weekday: 'long' })}`,
                     dayData.entry || '--:--',
                     dayData.lunchOut || '--:--',
                     dayData.lunchIn || '--:--',
                     dayData.exit || '--:--',
-                    dayData.extra || '--:--'
+                    extraDisplay
                 ]);
             }
 
@@ -276,7 +325,7 @@ class TimeClock {
                 styles: { font: 'helvetica', fontSize: 7.8, cellPadding: 1.8, lineWidth: 0.1 },
                 headStyles: { fillColor: [44, 62, 80], fontStyle: 'bold', textColor: 255 },
                 columnStyles: { 
-                    0: { cellWidth: 35 },
+                    0: { cellWidth: 40, halign: 'left' }, // Alinhar "Data" à esquerda
                     1: { cellWidth: 30 },
                     2: { cellWidth: 30 },
                     3: { cellWidth: 30 },
