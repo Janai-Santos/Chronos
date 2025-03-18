@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Kronos</title>
     <link rel="stylesheet" href="styles.css">
-    <!-- Linha adicionada para o favicon -->
     <link rel="icon" type="image/png" href="imagens/favicon.png">
 </head>
 
@@ -17,7 +16,6 @@
                 <div class="digital-clock" id="digitalClock">00:00:00</div>
                 <div class="date-display" id="dateDisplay"></div>
             </div>
-            <!-- Modificação no botão do usuário para mostrar mensagem ao passar o mouse -->
             <button id="userSettings" class="btn btn-user" title="Configurar perfil">
                 <img src="imagens/avatar.png" alt="Avatar do usuário">
             </button>
@@ -29,21 +27,21 @@
                 <table>
                     <thead>
                         <tr>
-                            <th>Hoje</th>
+                            <th class="highlight-today">Hoje</th>
                             <th>Entrada</th>
                             <th>Saída Almoço</th>
                             <th>Volta Almoço</th>
                             <th>Saída</th>
-                            <th>Horas Extras</th>
+                            <th class="highlight-extra">Horas Extras</th>
                         </tr>
                     </thead>
                     <tbody>
                         <tr>
                             <td></td>
-                            <td id="todayEntry">--:--</td>
-                            <td id="todayLunchOut">--:--</td>
-                            <td id="todayLunchIn">--:--</td>
-                            <td id="todayExit">--:--</td>
+                            <td><span id="todayEntry">--:--</span></td>
+                            <td><span id="todayLunchOut">--:--</span></td>
+                            <td><span id="todayLunchIn">--:--</span></td>
+                            <td><span id="todayExit">--:--</span></td>
                             <td id="todayExtra" class="extra-hours">--:--</td>
                         </tr>
                     </tbody>
@@ -54,7 +52,10 @@
 
         <div class="extra-hours-container">
             <div class="extra-hours">
-                Horas Extras Totais: <span id="totalExtraHours">00:00</span>
+                Mês atual: <span id="monthlyExtraHours">00:00</span>
+            </div>
+            <div class="extra-hours">
+                Horas totais: <span id="totalExtraHours">00:00</span>
             </div>
             <div class="month-selector">
                 <button id="prevMonth" class="btn btn-nav">◄</button>
@@ -83,10 +84,10 @@
             <div class="modal-content">
                 <h2>Editar Ponto - <span id="editDate"></span></h2>
                 <div class="time-inputs">
-                    <label>Entrada: <input type="time" id="editEntry"></label>
-                    <label>Saída Almoço: <input type="time" id="editLunchOut"></label>
-                    <label>Volta Almoço: <input type="time" id="editLunchIn"></label>
-                    <label>Saída: <input type="time" id="editExit"></label>
+                    <label>Entrada: <input type="time" id="editEntry" step="60"></label>
+                    <label>Saída Almoço: <input type="time" id="editLunchOut" step="60"></label>
+                    <label>Volta Almoço: <input type="time" id="editLunchIn" step="60"></label>
+                    <label>Saída: <input type="time" id="editExit" step="60"></label>
                 </div>
                 <div class="modal-buttons">
                     <button id="saveEdit" class="btn btn-green">Salvar</button>
